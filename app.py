@@ -31,12 +31,12 @@ def generate_sql():
     files = getOrganismFiles()
 
     input_dir = get_input_dir()
-    
+
     script_dir = os.path.dirname(os.path.abspath(__file__))
     output_path = os.path.join(script_dir, "result.sql")
 
 
-    expected_cols = 17  # Fallback standard GAF 2.0 column count
+    expected_cols = 17 
     for first_file in files:
         first_file_path = os.path.join(input_dir, first_file)
         if os.path.exists(first_file_path):
@@ -123,7 +123,7 @@ def generate_sql():
                     go_term_inserts.append(f"INSERT INTO go_terms (go_id, aspect) VALUES ('{go_id}', '{aspect}');")
 
                 # Insert annotation
-                annotation_inserts.append(f"INSERT INTO annotations (protein_id, go_id, evidence_code, reference, assigned_by, date) VALUES ('{protein_id}', '{go_id}', '{evidence_code}', '{reference}', '{assigned_by}', {sql_date});")
+                annotation_inserts.append(f"INSERT INTO protein_go_annotations (protein_id, go_id, evidence_code, reference, assigned_by, date) VALUES ('{protein_id}', '{go_id}', '{evidence_code}', '{reference}', '{assigned_by}', {sql_date});")
 
     # Write SQL Statements to output file
     print(f"(DEBUG) Writing SQL statements to: {output_path}")
@@ -187,7 +187,7 @@ def generate_sql():
                 out.write("-- Insert GO Term Data\n")
                 out.write("\n".join(go_term_inserts) + "\n\n")
                 
-                out.write("-- Insert Annotations\n")
+                out.write("-- Insert PROTEIN_GO_ANNOTATIONS\n")
                 out.write("\n".join(annotation_inserts) + "\n")
 
 
